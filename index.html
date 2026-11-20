@@ -211,7 +211,7 @@ function drawBunny(c) {
 
 /* ---------- the stuffies ---------- */
 const PLUSH = [
-  { id: 'penguin', name: 'Sir Waddles', kind: 'Penguin',   trait: 'Belly-slider',      kick: 1.0,  grav: 1,    drag: 0.03, bounce: 0.25, fric: 0.05, draw: drawPenguin },
+  { id: 'penguin', name: 'Sir Waddles', kind: 'Penguin',   trait: 'Belly-slider',      kick: 1.0,  grav: 1,    drag: 0.03, bounce: 0.25, fric: 0.3, draw: drawPenguin },
   { id: 'panda',   name: 'Bamboo Bob',  kind: 'Panda',     trait: 'Extra chonky',      kick: 0.8,  grav: 1,    drag: 0.01, bounce: 0.18, fric: 0.75, draw: drawPanda },
   { id: 'tree',    name: 'Little Spruce', kind: 'Tiny Tree', trait: 'Floats like a leaf', kick: 1.12, grav: 0.55, drag: 0.15, bounce: 0.3,  fric: 0.6,  draw: drawTree },
   { id: 'octo',    name: 'Inky',        kind: 'Octopus',   trait: 'Floppy & sticky',   kick: 1.12, grav: 1,    drag: 0.05, bounce: 0.06, fric: 1.4,  draw: drawOcto },
@@ -441,11 +441,11 @@ function physics(dt) {
       } else if (Math.abs(P.vy) * s.bounce > 4) {
         const k = sf && sf.type === 'hedge' ? 0.4 : 1;
         sfx.bounce(Math.abs(P.vy));
-        P.vy = -P.vy * s.bounce * k; P.vx *= (s.id === 'penguin' ? 0.95 : 0.8) * (k < 1 ? 0.5 : 1); P.av *= 0.7;
+        P.vy = -P.vy * s.bounce * k; P.vx *= (s.id === 'penguin' ? 0.85 : 0.8) * (k < 1 ? 0.5 : 1); P.av *= 0.7;
         burst(P.x, P.y, 6, f > 0 ? ['#3e9b4f', '#58b865'] : ['#6cc04a', '#a8794a'], 12);
       } else {
         P.vy = 0; P.grounded = true; if (sf && sf.type === 'hedge') P.vx *= 0.25;
-        if (s.id === 'penguin' && P.vx > 5) banner('BELLY SLIDE!', '#bfe6ff');
+        if (s.id === 'penguin') { P.vx = Math.min(P.vx, 38); if (P.vx > 5) banner('BELLY SLIDE!', '#bfe6ff'); }
         burst(P.x, P.y, 8, ['#6cc04a', '#a8794a'], 10);
       }
     }
